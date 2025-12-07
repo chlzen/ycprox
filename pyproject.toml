@@ -1,0 +1,22 @@
+[project]
+name = "ycprox"
+version = "0.1.0"
+description = "A tool for deploying api-gateway proxy in your Yandex Cloud infra"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "keyring>=25.7.0",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "requests>=2.32.5",
+]
+
+[project.scripts]
+ycprox = "ycprox.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
