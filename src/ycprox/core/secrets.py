@@ -1,4 +1,5 @@
 import keyring
+import json
 from keyring.backend import KeyringBackend
 from ycprox.core.config import settings
 from enum import Enum
@@ -23,6 +24,7 @@ class TestKeyring(KeyringBackend):
 
 class SecretsNames(Enum):
     OAUTH = "oauth_yandex_token"
+    PROXY_SETTINGS = "proxy_settings"
 
 class Vault():
     secrets: dict[SecretsNames, str] = {} 
@@ -45,5 +47,26 @@ class Vault():
     def remove_oauth_token(self):
         self.secrets.pop(SecretsNames.OAUTH.value, None)
         keyring.delete_password(settings.cli_name, SecretsNames.OAUTH.value)
+
+    def save_proxy_settings(self, proxy_settings: dict):
+        self.secrets[SecretsNames.PROXY_SETTINGS.value] = proxy_settings
+        keyring.set_password(settings.cli_name, SecretsNames.PROXY_SETTINGS.value, json.dumps(proxy_settings))
+
+    def load_proxy_settings(self) -> dict | None:
+        """Load proxy settings from keyring."""
+        data = keyring.get_password(settings.cli_name, SecretsNames.PROXY_SETTINGS.value)
+        if data:
+            proxy_settings = json.loads(data)
+            self.secrets[SecretsNames.PROXY_SETTINGS] = proxy_settings
+            return proxy_settings
+        return None
+
+    def pop_proxy_settings(self) -> dict | None:
+        """Load and remove proxy settings from keyring."""
+        proxy_settings = self.load_proxy_settings()
+        if proxy_settings:
+            self.secrets.pop(SecretsNames.PROXY_SETTINGS, None)
+            keyring.delete_password(settings.cli_name, SecretsNames.PROXY_SETTINGS.value)
+        return proxy_settings
 
 vault = Vault()
