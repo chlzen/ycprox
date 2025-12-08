@@ -1,14 +1,15 @@
+from pydantic_settings import CliSubCommand, CliApp
 from pydantic import BaseModel
-from ycprox.core.secrets import vault
-from getpass import getpass
+from ycprox.core.config import settings
+from ycprox.cli.auth.init import AuthInit
+from ycprox.cli.auth.reset import AuthReset
 
-oauth_url = "https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb&_ym_uid=1737881378596538906&mc=v"
 
-class Auth(BaseModel):
-    """Use this command to get Yandex OAuth token to spin up the proxy"""
+class AuthApp(BaseModel, cli_prog_name=settings.cli_name):
+    """Use this command to manage the Yandex OAuth authentication token"""
+
+    init: CliSubCommand[AuthInit]
+    reset: CliSubCommand[AuthReset]
 
     def cli_cmd(self) -> None:
-        print(f"Go to {oauth_url}, paste the token and press Enter to continue:")
-        token = getpass("Token: ")
-        vault.save_oauth_token(token)
-        print("Token saved successfully")
+        CliApp.run_subcommand(self)
