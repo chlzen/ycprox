@@ -1,9 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field, model_validator
+from typing import Optional
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="YCPROX_",
+        env_file=".env",
         env_file_encoding="utf-8",
     )
 
@@ -24,7 +26,22 @@ class Settings(BaseSettings):
         exclude=True
     )
 
-    ua_string: str | None = Field(
+    org_id: Optional[str] = Field(
+        default=None,
+        description="Organization ID to deploy proxy-gateway",
+    )
+
+    cloud_id: Optional[str] = Field(
+        default=None,
+        description="Cloud ID to deploy proxy-gateway",
+    )
+
+    folder_id: Optional[str] = Field(
+        default=None,
+        description="Folder ID to deploy proxy-gateway",
+    )
+
+    ua_string: Optional[str] = Field(
         default=None, 
         description="User-Agent string for HTTP requests",
     )

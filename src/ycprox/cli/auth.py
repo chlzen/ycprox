@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic_settings import CliSubCommand, CliApp
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from ycprox.core.secrets import vault
 from getpass import getpass
 from ycprox.core.config import settings
@@ -17,13 +17,24 @@ class Auth(BaseModel):
         print("Token saved successfully")
 
 class Proxy(BaseModel):
-    name: str = Field(description="Name of the proxy", default="proxy")
-    org_id: Optional[str] = Field(default=None, description="Organization ID")
-    cloud_id: Optional[str] = Field(default=None, description="Cloud ID")
-    folder_id: Optional[str] = Field(default=None, description="Folder ID")
+    name: str = Field(description="Name of the proxy gateway", default="proxy-gateway")
+    org_id: Optional[str] = Field(default=None, description="Organization ID to deploy proxy-gateway")
+    cloud_id: Optional[str] = Field(default=None, description="Cloud ID to deploy proxy-gateway")
+    folder_id: Optional[str] = Field(default=None, description="Folder ID to deploy proxy-gateway")
+
+    @model_validator(mode='after')
+    def set_defaults_from_env(self) -> 'Proxy':
+        if self.org_id is None:
+            self.org_id = settings.org_id
+        if self.cloud_id is None:
+            self.cloud_id = settings.cloud_id
+        if self.folder_id is None:
+            self.folder_id = settings.folder_id
+        return self
 
     def cli_cmd(self) -> None:
         print("Proxy command")
+        print(f"Model dump: {self.model_dump_json()}")
 
 class Application(BaseModel, cli_prog_name=settings.cli_name):
     auth: CliSubCommand[Auth]
