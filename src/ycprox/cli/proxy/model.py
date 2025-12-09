@@ -14,6 +14,7 @@ class ProxySettings(BaseModel):
     
     # Non-CLI args - populated after resources creation
     gateway_id: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
+    gateway_domain: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
     function_id: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
 
     @model_validator(mode='after')

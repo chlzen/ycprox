@@ -28,7 +28,7 @@ class ProxyAppDown(BaseModel):
             print("No function_id found in saved settings.")
             return
 
-        print(f"Deleting Cloud Function '{proxy.cf_name}' (ID: {proxy.function_id})...")
+        print(f"Deleting Cloud Function '{proxy.cf_name}' (id: {proxy.function_id})...")
         
         success = delete_cloud_function(proxy.function_id)
         
@@ -36,7 +36,7 @@ class ProxyAppDown(BaseModel):
             print("Cloud Function deleted successfully!")
         else:
             print("Failed to delete Cloud Function.")
-        print(f"Deleting API Gateway '{proxy.gw_name}' (ID: {proxy.gateway_id})...")
+        print(f"Deleting API Gateway '{proxy.gw_name}' (id: {proxy.gateway_id})...")
         
         success = delete_api_gateway(proxy.gateway_id)
         

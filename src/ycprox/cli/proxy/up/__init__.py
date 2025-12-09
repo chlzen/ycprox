@@ -35,9 +35,12 @@ class ProxyAppUp(ProxySettings):
         
         print(f"API Gateway created successfully!")
         print(f"Gateway ID: {gateway_id} on url https://{domain}/")
+
+        print(f"\nYou can now use https://{domain}/ to proxy requests to {self.url}")
         
-        # Save settings for later use by down command
+        # Save settings for later use by down and info commands
         self.gateway_id = gateway_id
         self.function_id = function_id
+        self.gateway_domain = domain
 
         vault.save_proxy_settings(self.model_dump())
