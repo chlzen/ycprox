@@ -8,17 +8,17 @@ class ProxySettings(BaseModel):
     """Shared proxy settings model for up/down commands."""
 
     url: str = Field(description="URL of the destination service to proxy requests to")
+    folder_id: str = Field(description="Folder ID to deploy proxy-gateway")
     gw_name: str = Field(default="ycprox-gateway", description="Name of the proxy gateway")
     cf_name: str = Field(default="ycprox-function", description="Name of the proxy function")
-    folder_id: Optional[str] = Field(default=None, description="Folder ID to deploy proxy-gateway")
     
     # Non-CLI args - populated after resources creation
     gateway_id: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
     gateway_domain: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
     function_id: Optional[str] = Field(default=None, description=CLI_SUPPRESS)
 
-    @model_validator(mode='after')
-    def set_defaults_from_env(self) -> 'ProxySettings':
-        if self.folder_id is None:
-            self.folder_id = settings.folder_id
-        return self
+    # @model_validator(mode='after')
+    # def set_defaults_from_env(self) -> 'ProxySettings':
+    #     if self.folder_id is None:
+    #         self.folder_id = settings.folder_id
+    #     return self
