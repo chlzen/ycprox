@@ -28,7 +28,7 @@ The proxy preserves headers, query parameters, and request bodies while filterin
 
 ```bash
 # Clone and install with setup.py
-git clone https://github.com/your-repo/ycprox.git
+git clone https://github.com/chlzen/ycprox.git
 cd ycprox
 python setup.py install
 
@@ -60,7 +60,7 @@ ycprox proxy down
 
 ### Proxy management
 
-#### `ycprox proxy up`
+`ycprox proxy up`
 
 Deploy proxy gateway setup to Yandex Cloud.
 
@@ -71,11 +71,11 @@ Deploy proxy gateway setup to Yandex Cloud.
 | `--gw-name` | No | `ycprox-gateway` | Name of the API Gateway |
 | `--cf-name` | No | `ycprox-function` | Name of the Cloud Function |
 
-#### `ycprox proxy info`
+`ycprox proxy info`
 
 Shows info about your current proxy.
 
-#### `ycprox proxy down`
+`ycprox proxy down`
 
 Deletes your proxy installation from cloud.
 
