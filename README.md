@@ -2,6 +2,8 @@
 
 A tool for deploying a forward proxy in your Yandex Cloud infrastructure to change your IP address (almost) each request.
 
+[Ru version of docs](docs/README-RU.md)
+
 ## Features
 - All HTTP(S) methods supported
 - All parameters and URI's are passed through
